@@ -6,7 +6,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import ru.job4j.cars.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,12 +74,13 @@ public class UserRepository {
      */
     public List<User> findAllOrderById() {
         Session session = sf.openSession();
-        List<User> users = new ArrayList<>();
+        List<User> users;
         try {
             session.beginTransaction();
-            users.addAll(session.createQuery("FROM User ORDER BY id").list());
+            users = session.createQuery("FROM User ORDER BY id").list();
             session.getTransaction().commit();
         } catch (Exception e) {
+            users = List.of();
             session.getTransaction().rollback();
         }
         session.close();
@@ -98,7 +98,7 @@ public class UserRepository {
             session.beginTransaction();
             Query<User> query = session.createQuery("FROM User WHERE id = :userId")
                     .setParameter("userId", userId);
-            userOptional = Optional.of(query.uniqueResult());
+            userOptional = query.uniqueResultOptional();
             session.getTransaction().commit();
         } catch (Exception e) {
             userOptional = Optional.empty();
@@ -115,14 +115,15 @@ public class UserRepository {
      */
     public List<User> findByLikeLogin(String key) {
         Session session = sf.openSession();
-        List<User> users = new ArrayList<>();
+        List<User> users;
         try {
             session.beginTransaction();
             Query<User> query = session.createQuery("FROM User WHERE login LIKE :key")
                     .setParameter("key", "%" + key + "%");
-            users.addAll(query.getResultList());
+            users = query.getResultList();
             session.getTransaction().commit();
         } catch (Exception e) {
+            users = List.of();
             session.getTransaction().rollback();
         }
         session.close();
@@ -141,7 +142,7 @@ public class UserRepository {
             session.beginTransaction();
             Query<User> query = session.createQuery("FROM User WHERE login = :login")
                     .setParameter("login", login);
-            userOptional = Optional.of(query.uniqueResult());
+            userOptional = query.uniqueResultOptional();
             session.getTransaction().commit();
         } catch (Exception e) {
             userOptional = Optional.empty();
