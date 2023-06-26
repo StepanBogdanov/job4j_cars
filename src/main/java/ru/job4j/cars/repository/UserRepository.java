@@ -39,11 +39,7 @@ public class UserRepository {
         Session session = sf.openSession();
         try {
             session.beginTransaction();
-            session.createQuery("UPDATE User SET login = :ulogin, password = :upassword WHERE id = :uid")
-                    .setParameter("ulogin", user.getLogin())
-                    .setParameter("upassword", user.getPassword())
-                    .setParameter("uid", user.getId())
-                    .executeUpdate();
+            session.update(user);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -74,13 +70,12 @@ public class UserRepository {
      */
     public List<User> findAllOrderById() {
         Session session = sf.openSession();
-        List<User> users;
+        List<User> users = List.of();
         try {
             session.beginTransaction();
             users = session.createQuery("FROM User ORDER BY id").list();
             session.getTransaction().commit();
         } catch (Exception e) {
-            users = List.of();
             session.getTransaction().rollback();
         }
         session.close();
@@ -93,7 +88,7 @@ public class UserRepository {
      */
     public Optional<User> findById(int userId) {
         Session session = sf.openSession();
-        Optional<User> userOptional;
+        Optional<User> userOptional = Optional.empty();
         try {
             session.beginTransaction();
             Query<User> query = session.createQuery("FROM User WHERE id = :userId")
@@ -101,7 +96,6 @@ public class UserRepository {
             userOptional = query.uniqueResultOptional();
             session.getTransaction().commit();
         } catch (Exception e) {
-            userOptional = Optional.empty();
             session.getTransaction().rollback();
         }
         session.close();
@@ -115,7 +109,7 @@ public class UserRepository {
      */
     public List<User> findByLikeLogin(String key) {
         Session session = sf.openSession();
-        List<User> users;
+        List<User> users = List.of();
         try {
             session.beginTransaction();
             Query<User> query = session.createQuery("FROM User WHERE login LIKE :key")
@@ -123,7 +117,6 @@ public class UserRepository {
             users = query.getResultList();
             session.getTransaction().commit();
         } catch (Exception e) {
-            users = List.of();
             session.getTransaction().rollback();
         }
         session.close();
@@ -137,7 +130,7 @@ public class UserRepository {
      */
     public Optional<User> findByLogin(String login) {
         Session session = sf.openSession();
-        Optional<User> userOptional;
+        Optional<User> userOptional = Optional.empty();
         try {
             session.beginTransaction();
             Query<User> query = session.createQuery("FROM User WHERE login = :login")
@@ -145,7 +138,6 @@ public class UserRepository {
             userOptional = query.uniqueResultOptional();
             session.getTransaction().commit();
         } catch (Exception e) {
-            userOptional = Optional.empty();
             session.getTransaction().rollback();
         }
         session.close();
