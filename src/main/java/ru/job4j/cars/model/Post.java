@@ -40,4 +40,8 @@ public class Post {
     @OneToOne
     @JoinColumn(name = "car_id")
     private Car car;
+
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 }

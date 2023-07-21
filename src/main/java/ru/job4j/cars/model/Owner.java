@@ -12,6 +12,7 @@ import javax.persistence.*;
 public class Owner {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
 

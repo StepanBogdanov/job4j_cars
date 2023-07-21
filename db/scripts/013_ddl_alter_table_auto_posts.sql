@@ -1,0 +1,1 @@
+ALTER TABLE auto_posts ADD COLUMN image_id INT REFERENCES images(id);

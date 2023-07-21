@@ -6,10 +6,10 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "engines")
+@Table(name = "images")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Engine {
+public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +17,7 @@ public class Engine {
     private int id;
 
     private String name;
+
+    @EqualsAndHashCode.Include
+    private String path;
 }
