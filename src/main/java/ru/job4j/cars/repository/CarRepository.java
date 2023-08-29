@@ -30,12 +30,12 @@ public class CarRepository {
     }
 
     public List<Car> findAll() {
-        return crudRepository.query("SELECT DISTINCT c FROM Car c LEFT JOIN FETCH c.owners ORDER BY id",
+        return crudRepository.query("SELECT DISTINCT c FROM Car c LEFT JOIN FETCH c.owners ORDER BY c.id",
                 Car.class);
     }
 
     public Optional<Car> findById(int id) {
-        return crudRepository.optional("SELECT DISTINCT c FROM Car c LEFT JOIN FETCH c.owners WHERE id = :id",
+        return crudRepository.optional("SELECT DISTINCT c FROM Car c LEFT JOIN FETCH c.owners WHERE c.id = :id",
                 Car.class, Map.of("id", id));
     }
 }

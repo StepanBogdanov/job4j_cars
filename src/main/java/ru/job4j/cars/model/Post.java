@@ -6,7 +6,9 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "auto_posts")
@@ -19,7 +21,8 @@ public class Post {
     @EqualsAndHashCode.Include
     private int id;
     private String description;
-    private LocalDateTime created;
+    private int price;
+    private LocalDateTime created = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "auto_user_id")
@@ -27,7 +30,7 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
-    private List<PriceHistory> history = new ArrayList<>();
+    private Set<PriceHistory> history = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
